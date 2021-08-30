@@ -29,7 +29,7 @@ runs:
       prefix: 'v'
     id: janet-ver
   - name: "set version of janet"
-    run: [[ ! ${{ inputs.janet-ver }} == "latest" ]] && echo "JANET_VER=${{ inputs.janet-ver }}" >> $GITHUB_ENV || echo "JANET_VER=${{ steps.janet-ver.outputs.tag }}" >> $GITHUB_ENV
+    run: ${{ github.action_path }}/janet_version.sh ${{ inputs.janet-ver }} ${{ steps.janet-ver.outputs.tag }} >> $GITHUB_ENV
     shell: bash
   - name: "set prefix"
     run: echo "PREFIX=$GITHUB_WORKSPACE/.janet" >> $GITHUB_ENV
