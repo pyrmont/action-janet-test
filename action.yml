@@ -1,0 +1,76 @@
+name: "Test Janet project"
+
+author: Michael Camilleri
+
+description: "Builds and tests a Janet project"
+
+inputs:
+  janet-ver:
+    description: "The version of Janet to test"
+    required: false
+    default: "latest"
+  os:
+    description: "The OS to use"
+    required: false
+    default: "linux"
+
+runs:
+  using: "composite"
+  steps:
+  - name: "checkout project"
+    uses: actions/checkout@v2
+    with:
+      submodules: true
+  - name: "find latest version of janet"
+    uses: oprypin/find-latest-tag@v1
+    if: inputs.janet-ver == 'latest'
+    with:
+      repository: janet-lang/janet
+      releases-only: true
+      prefix: 'v'
+    id: janet-ver
+  - name: "set version of janet to latest"
+    if: inputs.janet-ver == 'latest'
+    run: echo "JANET_VER=${{ steps.janet-ver.outputs.tag }}" >> $GITHUB_ENV
+    shell: bash
+  - name: "set version of janet manually"
+    if: inputs.janet-ver != 'latest'
+    run: echo "JANET_VER=${{ inputs.janet-ver }}" >> $GITHUB_ENV
+    shell: bash
+  - name: "set prefix"
+    run: echo "PREFIX=$GITHUB_WORKSPACE/.janet" >> $GITHUB_ENV
+    shell: bash
+  - name: "set paths"
+    run: |
+      echo "JANET_HEADERPATH=$PREFIX/include" >> $GITHUB_ENV
+      echo "JANET_BINPATH=$PREFIX/bin" >> $GITHUB_ENV
+      echo "JANET_LIBPATH=$PREFIX/lib" >> $GITHUB_ENV
+      echo "JANET_MANPATH=$PREFIX/man" >> $GITHUB_ENV
+      echo "JANET_PATH=$PREFIX/modules" >> $GITHUB_ENV
+    shell: bash
+  - name: "make directories"
+    run: |
+      mkdir -p .janet/modules
+      mkdir -p build/jpm
+    shell: bash
+  - name: "download janet"
+    run: curl -LO https://github.com/janet-lang/janet/releases/download/$JANET_VER/janet-$JANET_VER-${{ inputs.os }}-x64.tar.gz
+    shell: bash
+  - name: "extract janet"
+    run: tar -xzf janet-$JANET_VER-${{ inputs.os }}-x64.tar.gz --strip-components=2 -C $PREFIX
+    shell: bash
+  - name: "download jpm"
+    run: git clone --depth=1 https://github.com/janet-lang/jpm.git build/jpm
+    shell: bash
+  - name: "install jpm"
+    run: cd build/jpm && $PREFIX/bin/janet ./bootstrap.janet
+    shell: bash
+  - name: "return to workspace directory"
+    run: cd $GITHUB_WORKSPACE
+    shell: bash
+  - name: "install dependencies"
+    run: $PREFIX/bin/jpm deps
+    shell: bash
+  - name: "run tests"
+    run: $PREFIX/bin/jpm test
+    shell: bash
