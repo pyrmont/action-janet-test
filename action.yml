@@ -8,7 +8,7 @@ inputs:
   janet-ver:
     description: "The version of Janet to test"
     required: false
-    default: "latest"
+    default: false
   os:
     description: "The OS to use"
     required: false
@@ -23,19 +23,13 @@ runs:
       submodules: true
   - name: "find latest version of janet"
     uses: oprypin/find-latest-tag@v1
-    if: ${{ inputs.janet-ver == 'latest' }}
     with:
       repository: janet-lang/janet
       releases-only: true
       prefix: 'v'
     id: janet-ver
-  - name: "set version of janet to latest"
-    if: ${{ inputs.janet-ver == 'latest' }}
-    run: echo "JANET_VER=${{ steps.janet-ver.outputs.tag }}" >> $GITHUB_ENV
-    shell: bash
-  - name: "set version of janet manually"
-    if: ${{ inputs.janet-ver != 'latest' }}
-    run: echo "JANET_VER=${{ inputs.janet-ver }}" >> $GITHUB_ENV
+  - name: "set version of janet"
+    run: echo "JANET_VER=${{ inputs.janet-ver || steps.janet-ver.outputs.tag }}" >> $GITHUB_ENV
     shell: bash
   - name: "set prefix"
     run: echo "PREFIX=$GITHUB_WORKSPACE/.janet" >> $GITHUB_ENV
