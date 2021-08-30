@@ -2,7 +2,11 @@ name: "Test Janet project"
 
 author: Michael Camilleri
 
-description: "Builds and tests a Janet project"
+description: "Build and test a Janet project"
+
+branding:
+  icon: 'check-square'
+  color: 'purple'
 
 inputs:
   janet-ver:
