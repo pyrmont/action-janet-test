@@ -39,7 +39,9 @@ runs:
     run: echo "PREFIX=$GITHUB_WORKSPACE/.janet" >> $GITHUB_ENV
     shell: bash
   - name: "make directories"
-    run:  mkdir -p build/jpm
+    run:  |
+      mkdir -p $PREFIX
+      mkdir -p build/jpm
     shell: bash
   - name: "download janet"
     run: curl -LO https://github.com/janet-lang/janet/releases/download/$JANET_VER/janet-$JANET_VER-${{ inputs.os }}-x64.tar.gz
