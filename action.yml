@@ -38,18 +38,8 @@ runs:
   - name: "set prefix"
     run: echo "PREFIX=$GITHUB_WORKSPACE/.janet" >> $GITHUB_ENV
     shell: bash
-  - name: "set paths"
-    run: |
-      echo "JANET_HEADERPATH=$PREFIX/include" >> $GITHUB_ENV
-      echo "JANET_BINPATH=$PREFIX/bin" >> $GITHUB_ENV
-      echo "JANET_LIBPATH=$PREFIX/lib" >> $GITHUB_ENV
-      echo "JANET_MANPATH=$PREFIX/man" >> $GITHUB_ENV
-      echo "JANET_PATH=$PREFIX/modules" >> $GITHUB_ENV
-    shell: bash
   - name: "make directories"
-    run: |
-      mkdir -p .janet/modules
-      mkdir -p build/jpm
+    run:  mkdir -p build/jpm
     shell: bash
   - name: "download janet"
     run: curl -LO https://github.com/janet-lang/janet/releases/download/$JANET_VER/janet-$JANET_VER-${{ inputs.os }}-x64.tar.gz
@@ -67,8 +57,8 @@ runs:
     run: cd $GITHUB_WORKSPACE
     shell: bash
   - name: "install dependencies"
-    run: $PREFIX/bin/jpm deps
+    run: $PREFIX/bin/jpm --tree=.janet deps
     shell: bash
   - name: "run tests"
-    run: $PREFIX/bin/jpm test
+    run: $PREFIX/bin/jpm --tree=.janet test
     shell: bash
