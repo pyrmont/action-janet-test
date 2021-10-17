@@ -38,6 +38,14 @@ runs:
   - name: "set prefix"
     run: echo "PREFIX=$GITHUB_WORKSPACE/.janet" >> $GITHUB_ENV
     shell: bash
+  - name: "set paths"
+    run: |
+      echo "JANET_HEADERPATH=$PREFIX/include" >> $GITHUB_ENV
+      echo "JANET_BINPATH=$PREFIX/bin" >> $GITHUB_ENV
+      echo "JANET_LIBPATH=$PREFIX/lib" >> $GITHUB_ENV
+      echo "JANET_MANPATH=$PREFIX/man" >> $GITHUB_ENV
+      echo "JANET_PATH=$PREFIX" >> $GITHUB_ENV
+    shell: bash
   - name: "make directories"
     run:  |
       mkdir -p $PREFIX
@@ -53,7 +61,7 @@ runs:
     run: git clone --depth=1 https://github.com/janet-lang/jpm.git build/jpm
     shell: bash
   - name: "install jpm"
-    run: cd build/jpm && PREFIX=$PREFIX $PREFIX/bin/janet ./bootstrap.janet
+    run: cd build/jpm && $PREFIX/bin/janet ./bootstrap.janet
     shell: bash
   - name: "return to workspace directory"
     run: cd $GITHUB_WORKSPACE
