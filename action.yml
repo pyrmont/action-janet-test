@@ -53,7 +53,7 @@ runs:
     run: git clone --depth=1 https://github.com/janet-lang/jpm.git build/jpm
     shell: bash
   - name: "install jpm"
-    run: cd build/jpm && $PREFIX/bin/janet ./bootstrap.janet
+    run: cd build/jpm && PREFIX=$PREFIX $PREFIX/bin/janet ./bootstrap.janet
     shell: bash
   - name: "return to workspace directory"
     run: cd $GITHUB_WORKSPACE
