@@ -68,8 +68,8 @@ runs:
     run: cd $GITHUB_WORKSPACE
     shell: bash
   - name: "install dependencies"
-    run: $PREFIX/bin/jpm --tree=.janet deps
+    run: $PREFIX/bin/jpm deps
     shell: bash
   - name: "run tests"
-    run: $PREFIX/bin/jpm --tree=.janet test
+    run: $PREFIX/bin/jpm test
     shell: bash
