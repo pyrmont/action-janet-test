@@ -40,6 +40,7 @@ runs:
     shell: bash
   - name: "set paths"
     run: |
+      echo "$PREFIX/bin" >> $GITHUB_PATH
       echo "JANET_HEADERPATH=$PREFIX/include" >> $GITHUB_ENV
       echo "JANET_BINPATH=$PREFIX/bin" >> $GITHUB_ENV
       echo "JANET_LIBPATH=$PREFIX/lib" >> $GITHUB_ENV
