@@ -5,6 +5,7 @@ This action provides the following functionality for GitHub Action users:
 - Download Janet binary
 - Setup JPM
 - Install project dependencies using JPM
+- Run optional command with `jpm run`
 - Run tests using JPM
 
 ## Usage
