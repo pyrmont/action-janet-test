@@ -14,11 +14,13 @@ steps:
 - uses: pyrmont/action-janet-test@v1
   with:
     janet-ver: '1.17.1'
+    jpm-pre-test: 'dev-deps'
     os: 'linux'
 ```
 
-The `janet-ver` and `os` values are optional. If not supplied, the latest
-release of Janet is used and the OS is set to Linux.
+The `janet-ver`, `jpm-pre-test` and `os` values are optional. If not supplied,
+the latest release of Janet is used, the `clean` command is run and the OS is
+set to Linux.
 
 ## Example
 
