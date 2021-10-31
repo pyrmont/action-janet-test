@@ -13,6 +13,10 @@ inputs:
     description: "The version of Janet to test"
     required: false
     default: "latest"
+  jpm-pre-test:
+    description: "A command to run using 'jpm run' before 'jpm test'"
+    require: false
+    default: "clean"
   os:
     description: "The OS to use"
     required: false
@@ -69,6 +73,9 @@ runs:
     shell: bash
   - name: "install dependencies"
     run: $PREFIX/bin/jpm deps
+    shell: bash
+  - name: "run jpm-pre-test command"
+    run: $PREFIX/bin/jpm run ${{ inputs.jpm-pre-test }}
     shell: bash
   - name: "run tests"
     run: $PREFIX/bin/jpm test
