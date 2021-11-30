@@ -13,14 +13,27 @@ inputs:
     description: "The version of Janet to test"
     required: false
     default: "latest"
-  jpm-pre-test:
-    description: "A command to run using 'jpm run' before 'jpm test'"
-    require: false
-    default: "clean"
   os:
     description: "The OS to use"
     required: false
     default: "linux"
+  cmd-pre-deps:
+    description: "The command to execute before installing dependencies"
+    require: false
+    default: "jpm clean"
+  cmd-deps:
+    description: "The command to execute to install dependencies"
+    require: false
+    default: "jpm deps"
+  cmd-pre-test:
+    description: "The command to execute before running tests"
+    require: false
+    default: "jpm clean"
+  cmd-test:
+    description: "The command to execute to run tests"
+    require: false
+    default: "jpm test"
+
 
 runs:
   using: "composite"
@@ -71,12 +84,15 @@ runs:
   - name: "return to workspace directory"
     run: cd $GITHUB_WORKSPACE
     shell: bash
-  - name: "install dependencies"
-    run: $PREFIX/bin/jpm deps
+  - name: "prepare to install dependencies"
+    run: $PREFIX/bin/${{ inputs.cmd-pre-deps }}
     shell: bash
-  - name: "run jpm-pre-test command"
-    run: $PREFIX/bin/jpm run ${{ inputs.jpm-pre-test }}
+  - name: "install dependencies"
+    run: $PREFIX/bin/${{ inputs.cmd-deps }}
+    shell: bash
+  - name: "prepare to run tests"
+    run: $PREFIX/bin/${{ inputs.cmd-pre-test }}
     shell: bash
   - name: "run tests"
-    run: $PREFIX/bin/jpm test
+    run: $PREFIX/bin/${{ inputs.cmd-test }}
     shell: bash
