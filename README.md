@@ -4,24 +4,30 @@ This action provides the following functionality for GitHub Action users:
 
 - Download Janet binary
 - Setup JPM
-- Install project dependencies using JPM
-- Run optional command with `jpm run`
-- Run tests using JPM
+- Install project dependencies
+- Run tests
 
 ## Usage
 
 ```yaml
 steps:
-- uses: pyrmont/action-janet-test@v1
+- uses: pyrmont/action-janet-test@v4
   with:
-    janet-ver: '1.17.1'
-    jpm-pre-test: 'dev-deps'
+    janet-ver: '1.19.0'
     os: 'linux'
+    cmd-pre-deps: jpm install https://github.com/pyrmont/jeep
+    cmd-deps: jeep dev-deps
+    cmd-test: jeep test
 ```
 
-The `janet-ver`, `jpm-pre-test` and `os` values are optional. If not supplied,
-the latest release of Janet is used, the `clean` command is run and the OS is
-set to Linux.
+A user can specify the following inputs:
+
+- `janet-ver` (default: `latest`)
+- `os` (default: `linux`)
+- `cmd-pre-deps` (default: `jpm clean`)
+- `cmd-deps` (default: `jpm deps`)
+- `cmd-pre-test` (default: `jpm clean`)
+- `cmd-test` (default: `jpm test`)
 
 ## Example
 
