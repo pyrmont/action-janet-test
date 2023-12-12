@@ -11,13 +11,12 @@ This action provides the following functionality for GitHub Action users:
 
 ```yaml
 steps:
-- uses: pyrmont/action-janet-test@v4
+- uses: pyrmont/action-janet-test@v5
   with:
-    janet-ver: '1.19.0'
+    janet-ver: '1.32.1'
     os: 'linux'
-    cmd-pre-deps: jpm install https://github.com/pyrmont/jeep
-    cmd-deps: jeep dev-deps
-    cmd-test: jeep test
+    cmd-deps: jpm run dev-deps
+    cmd-test: jpm test
 ```
 
 A user can specify the following inputs:
