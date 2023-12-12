@@ -39,7 +39,7 @@ runs:
   using: "composite"
   steps:
   - name: "checkout project"
-    uses: actions/checkout@v2
+    uses: actions/checkout@v4
     with:
       submodules: true
   - name: "find latest version of janet"
